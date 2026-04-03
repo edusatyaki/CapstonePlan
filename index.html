@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Timeline — Data Analytics Sprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Fraunces:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#F9F8F5;
+  --white:#FFFFFF;
+  --text:#1C1C1E;
+  --sub:#6B6B6B;
+  --faint:#AEAEB2;
+  --border:#E5E4DF;
+  --border-strong:#C8C7C2;
+
+  --w1:#185FA5;
+  --w1-light:#E6F1FB;
+  --w1-mid:#B5D4F4;
+
+  --w2:#3B6D11;
+  --w2-light:#EAF3DE;
+  --w2-mid:#C0DD97;
+
+  --w3:#854F0B;
+  --w3-light:#FAEEDA;
+  --w3-mid:#FAC775;
+
+  --gold:#BA7517;
+  --gold-light:#FAEEDA;
+}
+
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  font-size:14px;
+  line-height:1.6;
+}
+
+/* ── TOP STRIP ── */
+.strip{
+  background:var(--text);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 48px;
+  font-size:11px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.strip-right{display:flex;gap:32px}
+.strip-right span{opacity:.5}
+.strip-right strong{opacity:1;font-weight:600;margin-left:4px}
+
+/* ── HEADER ── */
+header{
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:52px 48px 44px;
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:48px;
+  align-items:end;
+}
+
+.hd-kicker{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--faint);
+  font-weight:600;
+  margin-bottom:12px;
+}
+
+h1{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:42px;
+  font-weight:600;
+  line-height:1.1;
+  letter-spacing:-0.5px;
+  color:var(--text);
+}
+h1 i{color:var(--w1);font-style:italic;font-weight:400}
+
+.hd-desc{
+  margin-top:14px;
+  font-size:14px;
+  color:var(--sub);
+  max-width:480px;
+  line-height:1.7;
+}
+
+/* stat cards */
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.stat{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+}
+.stat-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:4px}
+.stat-value{font-size:16px;font-weight:600;color:var(--text)}
+
+/* ── WEEK TABS ── */
+.tabs{
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:0 48px;
+  display:flex;
+  gap:0;
+}
+.tab{
+  font-size:13px;
+  font-weight:500;
+  color:var(--sub);
+  padding:14px 20px;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all .2s;
+  user-select:none;
+  letter-spacing:.3px;
+}
+.tab:hover{color:var(--text)}
+.tab.active-w1{color:var(--w1);border-bottom-color:var(--w1)}
+.tab.active-w2{color:var(--w2);border-bottom-color:var(--w2)}
+.tab.active-w3{color:var(--w3);border-bottom-color:var(--w3)}
+
+/* ── LAYOUT ── */
+.layout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:calc(100vh - 260px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  background:var(--white);
+  border-right:1px solid var(--border);
+  padding:32px 0;
+}
+
+.sidebar-section{padding:0 24px;margin-bottom:28px}
+.sidebar-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:12px;padding:0 4px}
+
+.week-pill{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:background .15s;
+  margin-bottom:4px;
+}
+.week-pill:hover{background:var(--bg)}
+.week-pill.active{background:var(--bg)}
+
+.pill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.week-pill-info{flex:1}
+.week-pill-name{font-size:13px;font-weight:500;color:var(--text)}
+.week-pill-dates{font-size:11px;color:var(--sub);margin-top:1px}
+.pill-count{
+  font-size:11px;font-weight:600;
+  padding:2px 8px;
+  border-radius:20px;
+}
+
+.w1 .pill-dot{background:var(--w1)}
+.w1 .pill-count{background:var(--w1-light);color:var(--w1)}
+.w2 .pill-dot{background:var(--w2)}
+.w2 .pill-count{background:var(--w2-light);color:var(--w2)}
+.w3 .pill-dot{background:var(--w3)}
+.w3 .pill-count{background:var(--w3-light);color:var(--w3)}
+
+.divider{height:1px;background:var(--border);margin:0 24px 28px}
+
+.total-marks{
+  padding:16px 20px;
+  margin:0 24px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:10px;
+}
+.tm-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:8px}
+.tm-bar{height:4px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.tm-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--w1),var(--w2));width:0;transition:width 1.2s cubic-bezier(.25,.8,.25,1)}
+.tm-nums{display:flex;justify-content:space-between;font-size:12px}
+.tm-scored{font-weight:600;color:var(--text)}
+.tm-total{color:var(--sub)}
+
+.criteria-list{padding:0 24px}
+.crit-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.crit-row:last-child{border-bottom:none}
+.crit-name{font-size:12px;color:var(--sub)}
+.crit-pts{font-size:12px;font-weight:600;color:var(--text)}
+
+/* ── MAIN ── */
+.main{
+  padding:40px 48px 80px;
+  overflow-y:auto;
+}
+
+/* week section */
+.week-section{display:none}
+.week-section.visible{display:block}
+
+.ws-header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:32px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--border);
+}
+.ws-badge{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:5px 14px;
+  border-radius:20px;
+}
+.ws-title{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--text)}
+.ws-dates{font-size:13px;color:var(--sub);margin-left:auto}
+
+.w1 .ws-badge{background:var(--w1-light);color:var(--w1);border:1px solid var(--w1-mid)}
+.w2 .ws-badge{background:var(--w2-light);color:var(--w2);border:1px solid var(--w2-mid)}
+.w3 .ws-badge{background:var(--w3-light);color:var(--w3);border:1px solid var(--w3-mid)}
+
+/* timeline */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{
+  content:'';
+  position:absolute;
+  left:7px;top:6px;bottom:6px;
+  width:1px;
+  background:var(--border);
+}
+
+.tl-item{
+  position:relative;
+  margin-bottom:20px;
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity .4s ease,transform .4s ease;
+}
+.tl-item.in{opacity:1;transform:translateY(0)}
+
+.tl-dot{
+  position:absolute;
+  left:-29px;
+  top:20px;
+  width:15px;height:15px;
+  border-radius:50%;
+  background:var(--white);
+  border:2px solid var(--border-strong);
+  transition:transform .2s;
+  z-index:1;
+}
+
+.tl-item:hover .tl-dot{transform:scale(1.3)}
+.week-1-dot{border-color:var(--w1)}
+.week-2-dot{border-color:var(--w2)}
+.week-3-dot{border-color:var(--w3)}
+
+.tl-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:20px 24px;
+  cursor:default;
+  transition:border-color .2s,box-shadow .2s;
+}
+.tl-card:hover{border-color:var(--border-strong);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+
+.card-date-tag{
+  font-size:10px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:600;
+  color:var(--faint);
+  margin-bottom:6px;
+}
+.card-title{
+  font-size:15px;
+  font-weight:600;
+  color:var(--text);
+  line-height:1.4;
+}
+
+.badge{
+  font-size:11px;
+  font-weight:700;
+  padding:4px 12px;
+  border-radius:20px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.badge-pts{background:var(--gold-light);color:var(--gold);border:1px solid #F0D49A}
+.badge-ongoing{background:#F2F2F2;color:var(--sub);border:1px solid var(--border)}
+.badge-deadline{background:#FFF0F0;color:#A32D2D;border:1px solid #F7C1C1}
+
+.card-bottom{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+}
+.eval-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);font-weight:600}
+.eval-val{font-size:12px;color:var(--sub);font-style:italic}
+
+/* all weeks view */
+.all-week-title{
+  font-family:'Fraunces',serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--text);
+  margin:28px 0 16px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.awt-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+
+/* responsive */
+@media(max-width:860px){
+  header{grid-template-columns:1fr;gap:24px}
+  .layout{grid-template-columns:1fr}
+  .sidebar{border-right:none;border-bottom:1px solid var(--border);padding:20px 0}
+  header{padding:32px 24px 28px}
+  .tabs{padding:0 24px}
+  .main{padding:28px 24px 60px}
+  .strip{padding:10px 24px;flex-direction:column;gap:6px;text-align:center}
+  .strip-right{gap:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="strip">
+  <span>Data Analytics Project &nbsp;·&nbsp; Sprint Execution Plan</span>
+  <div class="strip-right">
+    <span>Apr 20 – May 8, 2025</span>
+    <span>·</span>
+    <span><strong>100</strong> pts total</span>
+    <span>·</span>
+    <span><strong>3</strong> weeks</span>
+  </div>
+</div>
+
+<header>
+  <div>
+    <div class="hd-kicker">Project Schedule</div>
+    <h1>Sprint <i>Execution</i><br>Roadmap</h1>
+    <p class="hd-desc">A structured 3-week plan covering data collection, analysis, dashboard development, and final presentation — with clearly defined evaluation criteria and marks per milestone.</p>
+  </div>
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-label">Start</div>
+      <div class="stat-value">Apr 20</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">End</div>
+      <div class="stat-value">May 8</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Tasks</div>
+      <div class="stat-value">10 items</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Total Marks</div>
+      <div class="stat-value">100 pts</div>
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active-w1" data-week="all" onclick="showWeek('all',this)">All Weeks</div>
+  <div class="tab" data-week="w1" onclick="showWeek('w1',this)">Week 1</div>
+  <div class="tab" data-week="w2" onclick="showWeek('w2',this)">Week 2</div>
+  <div class="tab" data-week="w3" onclick="showWeek('w3',this)">Week 3</div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Weeks</div>
+      <div class="week-pill w1" onclick="showWeek('w1',null)">
+        <div class="pill-dot"></div>
+        <div class="week-pill-info">
+          <div class="week-pill-name">Week 1</div>
+          <div class="week-pill-dates">Apr 20 – Apr 24</div>
+        </div>
+        <span class="pill-count">3 tasks</span>
+      </div>
+      <div class="week-pill w2" onclick="showWeek('w2',null)">
+        <div class="pill-dot"></div>
+        <div class="week-pill-info">
+          <div class="week-pill-name">Week 2</div>
+          <div class="week-pill-dates">Apr 27 – May 1</div>
+        </div>
+        <span class="pill-count">3 tasks</span>
+      </div>
+      <div class="week-pill w3" onclick="showWeek('w3',null)">
+        <div class="pill-dot"></div>
+        <div class="week-pill-info">
+          <div class="week-pill-name">Week 3</div>
+          <div class="week-pill-dates">May 4 – May 8</div>
+        </div>
+        <span class="pill-count">4 tasks</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sidebar-section">
+      <div class="total-marks">
+        <div class="tm-label">Total marks progress</div>
+        <div class="tm-bar"><div class="tm-fill" id="tmFill"></div></div>
+        <div class="tm-nums"><span class="tm-scored">100 pts graded</span><span class="tm-total">/ 100</span></div>
+      </div>
+    </div>
+
+    <div class="criteria-list">
+      <div class="sidebar-label" style="padding:0 4px">Marks by criterion</div>
+      <div class="crit-row"><span class="crit-name">Problem Understanding</span><span class="crit-pts">5 pts</span></div>
+      <div class="crit-row"><span class="crit-name">Data Cleaning</span><span class="crit-pts">10 pts</span></div>
+      <div class="crit-row"><span class="crit-name">Analysis Depth</span><span class="crit-pts">20 pts</span></div>
+      <div class="crit-row"><span class="crit-name">Tableau Dashboard</span><span class="crit-pts">15 pts</span></div>
+      <div class="crit-row"><span class="crit-name">Recommendations</span><span class="crit-pts">20 pts</span></div>
+      <div class="crit-row"><span class="crit-name">GitHub + Resume</span><span class="crit-pts">20 pts</span></div>
+      <div class="crit-row"><span class="crit-name">Presentation</span><span class="crit-pts">10 pts</span></div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main" id="mainContent">
+
+    <!-- ALL VIEW -->
+    <div class="week-section visible" id="sec-all">
+
+      <div class="all-week-title"><span class="awt-dot" style="background:var(--w1)"></span>Week 1 &mdash; Apr 20 to Apr 24</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot week-1-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 20 – 21 &nbsp;·&nbsp; Mon – Tue</div><div class="card-title">Team Formation, Sector & Problem Finalization, Dataset Collection, Project Planning</div></div>
+              <div class="badge badge-pts">5 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Problem Understanding</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-1-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 22 – 23 &nbsp;·&nbsp; Wed – Thu</div><div class="card-title">Data Understanding, Cleaning (Python), Data Dictionary</div></div>
+              <div class="badge badge-pts">10 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Data Cleaning (Python)</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-1-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 24 &nbsp;·&nbsp; Friday</div><div class="card-title">EDA, KPI Identification, Insights (Start)</div></div>
+              <div class="badge badge-ongoing">Ongoing</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Analysis Depth (Initial) — continues into Week 2</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="all-week-title" style="margin-top:36px"><span class="awt-dot" style="background:var(--w2)"></span>Week 2 &mdash; Apr 27 to May 1</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot week-2-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 27 – 28 &nbsp;·&nbsp; Mon – Tue</div><div class="card-title">Continue EDA + Finalize Insights</div></div>
+              <div class="badge badge-ongoing">Ongoing</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Analysis Depth (Initial) — finalizing</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-2-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 29 – 30 &nbsp;·&nbsp; Wed – Thu</div><div class="card-title">Advanced Analysis — Forecasting / Clustering / Root Cause</div></div>
+              <div class="badge badge-pts">20 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Analysis Depth (Final)</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-2-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 1 &nbsp;·&nbsp; Friday</div><div class="card-title">Build Tableau Dashboard — Executive + Operational</div></div>
+              <div class="badge badge-pts">15 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Dashboard (Tableau)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="all-week-title" style="margin-top:36px"><span class="awt-dot" style="background:var(--w3)"></span>Week 3 &mdash; May 4 to May 8</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot week-3-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 4 – 5 &nbsp;·&nbsp; Mon – Tue</div><div class="card-title">Complete Dashboard + PPT + Recommendations</div></div>
+              <div class="badge badge-pts">20 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Business / Policy Recommendations</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-3-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 6 &nbsp;·&nbsp; Wednesday</div><div class="card-title">Final Packaging + Submission Freeze</div></div>
+              <div class="badge badge-deadline">Deadline</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Note</span><span class="eval-val">All deliverables locked — no further edits</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-3-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 7 &nbsp;·&nbsp; Thursday</div><div class="card-title">Resume + GitHub Repository + Dashboard Publishing</div></div>
+              <div class="badge badge-pts">20 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Resume + GitHub Repo + Dashboard Link</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-3-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 8 &nbsp;·&nbsp; Friday</div><div class="card-title">Final Presentation + Viva</div></div>
+              <div class="badge badge-pts">10 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Storytelling & Presentation</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 1 -->
+    <div class="week-section" id="sec-w1">
+      <div class="ws-header w1">
+        <span class="ws-badge">Week 1</span>
+        <span class="ws-title">Foundation & Data</span>
+        <span class="ws-dates">Apr 20 – Apr 24, 2025</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot week-1-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 20 – 21 &nbsp;·&nbsp; Mon – Tue</div><div class="card-title">Team Formation, Sector & Problem Finalization, Dataset Collection, Project Planning</div></div>
+              <div class="badge badge-pts">5 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Problem Understanding</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-1-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 22 – 23 &nbsp;·&nbsp; Wed – Thu</div><div class="card-title">Data Understanding, Cleaning (Python), Data Dictionary</div></div>
+              <div class="badge badge-pts">10 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Data Cleaning (Python)</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-1-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 24 &nbsp;·&nbsp; Friday</div><div class="card-title">EDA, KPI Identification, Insights (Start)</div></div>
+              <div class="badge badge-ongoing">Ongoing</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Analysis Depth (Initial) — continues into Week 2</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 2 -->
+    <div class="week-section" id="sec-w2">
+      <div class="ws-header w2">
+        <span class="ws-badge">Week 2</span>
+        <span class="ws-title">Analysis & Dashboard</span>
+        <span class="ws-dates">Apr 27 – May 1, 2025</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot week-2-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 27 – 28 &nbsp;·&nbsp; Mon – Tue</div><div class="card-title">Continue EDA + Finalize Insights</div></div>
+              <div class="badge badge-ongoing">Ongoing</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Analysis Depth (Initial) — finalizing</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-2-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">Apr 29 – 30 &nbsp;·&nbsp; Wed – Thu</div><div class="card-title">Advanced Analysis — Forecasting / Clustering / Root Cause</div></div>
+              <div class="badge badge-pts">20 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Analysis Depth (Final)</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-2-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 1 &nbsp;·&nbsp; Friday</div><div class="card-title">Build Tableau Dashboard — Executive + Operational</div></div>
+              <div class="badge badge-pts">15 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Dashboard (Tableau)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 3 -->
+    <div class="week-section" id="sec-w3">
+      <div class="ws-header w3">
+        <span class="ws-badge">Week 3</span>
+        <span class="ws-title">Delivery & Presentation</span>
+        <span class="ws-dates">May 4 – May 8, 2025</span>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot week-3-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 4 – 5 &nbsp;·&nbsp; Mon – Tue</div><div class="card-title">Complete Dashboard + PPT + Recommendations</div></div>
+              <div class="badge badge-pts">20 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Business / Policy Recommendations</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-3-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 6 &nbsp;·&nbsp; Wednesday</div><div class="card-title">Final Packaging + Submission Freeze</div></div>
+              <div class="badge badge-deadline">Deadline</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Note</span><span class="eval-val">All deliverables locked — no further edits</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-3-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 7 &nbsp;·&nbsp; Thursday</div><div class="card-title">Resume + GitHub Repository + Dashboard Publishing</div></div>
+              <div class="badge badge-pts">20 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Resume + GitHub Repo + Dashboard Link</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot week-3-dot"></div>
+          <div class="tl-card">
+            <div class="card-top">
+              <div><div class="card-date-tag">May 8 &nbsp;·&nbsp; Friday</div><div class="card-title">Final Presentation + Viva</div></div>
+              <div class="badge badge-pts">10 pts</div>
+            </div>
+            <div class="card-bottom"><span class="eval-label">Criterion</span><span class="eval-val">Storytelling & Presentation</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const colorMap={all:'w1',w1:'w1',w2:'w2',w3:'w3'};
+
+function showWeek(key,tabEl){
+  document.querySelectorAll('.week-section').forEach(s=>s.classList.remove('visible'));
+  document.getElementById('sec-'+key).classList.add('visible');
+
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.classList.remove('active-w1','active-w2','active-w3');
+  });
+  if(tabEl){
+    tabEl.classList.add('active-'+colorMap[key]);
+  } else {
+    document.querySelectorAll('.tab').forEach(t=>{
+      if(t.dataset.week===key) t.classList.add('active-'+colorMap[key]);
+    });
+  }
+
+  setTimeout(()=>{
+    document.querySelectorAll('#sec-'+key+' .tl-item').forEach((el,i)=>{
+      setTimeout(()=>el.classList.add('in'),i*80);
+    });
+  },30);
+}
+
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.1});
+
+document.querySelectorAll('#sec-all .tl-item').forEach((el,i)=>{
+  setTimeout(()=>{
+    el.style.transitionDelay=i*60+'ms';
+    io.observe(el);
+  },100);
+});
+
+setTimeout(()=>{
+  document.getElementById('tmFill').style.width='100%';
+},600);
+</script>
+</body>
+</html>
